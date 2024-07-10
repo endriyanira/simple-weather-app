@@ -220,6 +220,7 @@ const WeatherApp = () => {
       >
         {searchTerm !== "" &&
           !isCitySelected &&
+          !isNotFound &&
           citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
             <button
               key={index}
