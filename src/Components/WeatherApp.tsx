@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaSearch } from "react-icons/fa";
 import { BiWater } from "react-icons/bi";
 import { FiWind } from "react-icons/fi";
 
+import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
 import cloud_icon from "../Assets/cloud.png";
 import mist_icon from "../Assets/mist.png";
@@ -11,7 +11,6 @@ import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
-import { debounce } from "../utils/debounce";
 
 type WeatherDataType = {
   humidity: number;
@@ -20,6 +19,7 @@ type WeatherDataType = {
   temperature: number;
   description: string;
   weatherMain: string;
+  name: string;
 };
 
 type DataResponseType = {
@@ -86,6 +86,7 @@ const WeatherApp = () => {
 
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
 
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
@@ -94,6 +95,7 @@ const WeatherApp = () => {
     temperature: 0,
     description: "",
     weatherMain: "",
+    name: "",
   });
   const API_KEY = "f9327b0d53f73ccc3a6f94d0d8a2def2";
 
@@ -104,6 +106,7 @@ const WeatherApp = () => {
       );
       const data = await response.json();
       setCitiesCoordinate(data);
+      setIsCitySelected(false);
     }, 500),
     []
   );
@@ -112,6 +115,7 @@ const WeatherApp = () => {
     const { value } = e.target;
     setSearchTerm(value);
     if (value) {
+      setIsCitySelected(false);
       debouncedFetchCities(value);
     }
   };
@@ -127,7 +131,11 @@ const WeatherApp = () => {
   };
 
   const handleSearchCity = async () => {
-    setIsSearch(true);
+    if (selectedCoordinate.lat === 0) {
+      setIsSearch(false);
+    } else {
+      setIsSearch(true);
+    }
     if (searchTerm.length === 0) {
       return [];
     }
@@ -147,7 +155,9 @@ const WeatherApp = () => {
         temperature: dataResponse.main.temp,
         description: dataResponse.weather[0].description,
         weatherMain: dataResponse.weather[0].main,
+        name: dataResponse.name,
       });
+      setIsCitySelected(true);
     } catch (error) {
       if (error instanceof Error) {
         setIsNotFound(true);
@@ -201,6 +211,7 @@ const WeatherApp = () => {
           }}
         >
           {searchTerm !== "" &&
+            !isCitySelected &&
             citiesCoordinate.map(
               (city: CityWithCoodinateType, index: number) => (
                 <button
@@ -218,9 +229,6 @@ const WeatherApp = () => {
               )
             )}
         </div>
-        {/* <button onClick={handleSearchCity}>
-          <FaSearch />
-        </button> */}
       </div>
       {isSearch && (
         <>
@@ -228,6 +236,7 @@ const WeatherApp = () => {
             <div className="box">
               <div className="info-weather">
                 <div className="weather">
+                  <p className="cityname">{weatherData.name}</p>
                   <img src={getWIcon(weatherData.weatherMain)} alt="" />
                   <p className="temperature">
                     {Math.floor(weatherData.temperature)}
