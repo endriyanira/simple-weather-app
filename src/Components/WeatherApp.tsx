@@ -64,11 +64,15 @@ type DataResponseType = {
   name: string;
   cod: number;
 };
-
 const WeatherApp = () => {
   const [city, setCity] = useState<string>("");
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [selectedCoordinate, setSelectedCoordinate] = useState({
+    lat: "",
+    lon: "",
+  });
+
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
     windSpeed: 0,
@@ -144,6 +148,7 @@ const WeatherApp = () => {
           className="cityInput"
           placeholder="Enter Your Location"
           onChange={handleChangeCity}
+          value={city}
         />
         <button onClick={handleSearchCity}>
           <FaSearch />
