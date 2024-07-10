@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { BiWater } from "react-icons/bi";
 import { FiWind } from "react-icons/fi";
+import { FaSearch } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
@@ -104,9 +105,13 @@ const WeatherApp = () => {
       const response = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=f9327b0d53f73ccc3a6f94d0d8a2def2&limit=5`
       );
-      const data = await response.json();
-      setCitiesCoordinate(data);
-      setIsCitySelected(false);
+      const data: CityWithCoodinateType[] = await response.json();
+      if (data.length === 0) {
+        setIsNotFound(true);
+      } else {
+        setCitiesCoordinate(data);
+        setIsCitySelected(false);
+      }
     }, 500),
     []
   );
@@ -128,6 +133,7 @@ const WeatherApp = () => {
       lat: city.lat,
       lon: city.lon,
     });
+    setWeatherData({ ...weatherData, name: city.name });
   };
 
   const handleSearchCity = async () => {
@@ -155,7 +161,6 @@ const WeatherApp = () => {
         temperature: dataResponse.main.temp,
         description: dataResponse.weather[0].description,
         weatherMain: dataResponse.weather[0].main,
-        name: dataResponse.name,
       });
       setIsCitySelected(true);
     } catch (error) {
@@ -203,32 +208,31 @@ const WeatherApp = () => {
           onChange={handleChangeCityInput}
           value={searchTerm}
         />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            position: "relative",
-          }}
-        >
-          {searchTerm !== "" &&
-            !isCitySelected &&
-            citiesCoordinate.map(
-              (city: CityWithCoodinateType, index: number) => (
-                <button
-                  key={index}
-                  value={city.name}
-                  style={{
-                    textAlign: "left",
-                    padding: "4px 8px",
-                    margin: "2px",
-                  }}
-                  onClick={(e) => handleClickCity(e, city)}
-                >
-                  {`${city.name} ${city.state ? city.state : city.country}`}
-                </button>
-              )
-            )}
-        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          position: "absolute",
+          zIndex: "200",
+          padding: "4px",
+        }}
+      >
+        {searchTerm !== "" &&
+          !isCitySelected &&
+          citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
+            <button
+              key={index}
+              value={city.name}
+              style={{
+                textAlign: "left",
+                padding: "4px 8px",
+              }}
+              onClick={(e) => handleClickCity(e, city)}
+            >
+              {`${city.name} ${city.state ? city.state : city.country}`}
+            </button>
+          ))}
       </div>
       {isSearch && (
         <>

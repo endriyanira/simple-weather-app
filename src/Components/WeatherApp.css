@@ -29,8 +29,7 @@ body {
 }
 
 .container.default {
-  display: flex;
-  height: 500px;
+  height: 100px;
 }
 
 .search-box {
