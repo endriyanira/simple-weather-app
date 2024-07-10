@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
 import { BiWater } from "react-icons/bi";
 import { FiWind } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
@@ -112,7 +112,7 @@ const WeatherApp = () => {
         setCitiesCoordinate(data);
         setIsCitySelected(false);
       }
-    }, 500),
+    }, 300),
     []
   );
 
@@ -123,6 +123,12 @@ const WeatherApp = () => {
       setIsCitySelected(false);
       debouncedFetchCities(value);
     }
+  };
+
+  const handleResetInput = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    setSearchTerm("");
   };
 
   const handleClickCity = (
@@ -208,6 +214,11 @@ const WeatherApp = () => {
           onChange={handleChangeCityInput}
           value={searchTerm}
         />
+        {searchTerm !== "" && (
+          <button onClick={handleResetInput}>
+            <FaDeleteLeft />
+          </button>
+        )}
       </div>
       <div
         style={{
@@ -220,6 +231,7 @@ const WeatherApp = () => {
       >
         {searchTerm !== "" &&
           !isCitySelected &&
+          citiesCoordinate.length !== 0 &&
           citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
             <button
               key={index}
