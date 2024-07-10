@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaSearch } from "react-icons/fa";
 import { BiWater } from "react-icons/bi";
 import { FiWind } from "react-icons/fi";
 
+import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
 import cloud_icon from "../Assets/cloud.png";
 import mist_icon from "../Assets/mist.png";
@@ -19,6 +19,7 @@ type WeatherDataType = {
   temperature: number;
   description: string;
   weatherMain: string;
+  name: string;
 };
 
 type DataResponseType = {
@@ -64,14 +65,28 @@ type DataResponseType = {
   name: string;
   cod: number;
 };
+
+interface CityWithCoodinateType {
+  name: string;
+  lat: number;
+  lon: number;
+  country?: string;
+  state?: string;
+}
+
 const WeatherApp = () => {
-  const [city, setCity] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [citiesCoordinate, setCitiesCoordinate] = useState<
+    CityWithCoodinateType[]
+  >([]);
+  const [selectedCoordinate, setSelectedCoordinate] = useState({
+    lat: 0,
+    lon: 0,
+  });
+
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
-  const [selectedCoordinate, setSelectedCoordinate] = useState({
-    lat: "",
-    lon: "",
-  });
+  const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
 
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
@@ -80,20 +95,52 @@ const WeatherApp = () => {
     temperature: 0,
     description: "",
     weatherMain: "",
+    name: "",
   });
   const API_KEY = "f9327b0d53f73ccc3a6f94d0d8a2def2";
 
-  const handleChangeCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCity(e.target.value);
+  const debouncedFetchCities = useCallback(
+    debounce(async (searchTerm: string) => {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=f9327b0d53f73ccc3a6f94d0d8a2def2&limit=5`
+      );
+      const data = await response.json();
+      setCitiesCoordinate(data);
+      setIsCitySelected(false);
+    }, 500),
+    []
+  );
+
+  const handleChangeCityInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+    if (value) {
+      setIsCitySelected(false);
+      debouncedFetchCities(value);
+    }
+  };
+
+  const handleClickCity = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    city: CityWithCoodinateType
+  ) => {
+    setSelectedCoordinate({
+      lat: city.lat,
+      lon: city.lon,
+    });
   };
 
   const handleSearchCity = async () => {
-    setIsSearch(true);
-    if (city.length === 0) {
-      return 0;
+    if (selectedCoordinate.lat === 0) {
+      setIsSearch(false);
+    } else {
+      setIsSearch(true);
+    }
+    if (searchTerm.length === 0) {
+      return [];
     }
     try {
-      const URL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+      const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${selectedCoordinate.lat}&lon=${selectedCoordinate.lon}&appid=${API_KEY}&units=metric`;
       const response = await fetch(URL, {
         method: "GET",
       });
@@ -108,7 +155,9 @@ const WeatherApp = () => {
         temperature: dataResponse.main.temp,
         description: dataResponse.weather[0].description,
         weatherMain: dataResponse.weather[0].main,
+        name: dataResponse.name,
       });
+      setIsCitySelected(true);
     } catch (error) {
       if (error instanceof Error) {
         setIsNotFound(true);
@@ -135,6 +184,10 @@ const WeatherApp = () => {
     }
   };
 
+  useEffect(() => {
+    handleSearchCity();
+  }, [selectedCoordinate]);
+
   return (
     <div
       className={`container ${isNotFound && "notfound"} ${
@@ -147,12 +200,35 @@ const WeatherApp = () => {
           type="text"
           className="cityInput"
           placeholder="Enter Your Location"
-          onChange={handleChangeCity}
-          value={city}
+          onChange={handleChangeCityInput}
+          value={searchTerm}
         />
-        <button onClick={handleSearchCity}>
-          <FaSearch />
-        </button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+          }}
+        >
+          {searchTerm !== "" &&
+            !isCitySelected &&
+            citiesCoordinate.map(
+              (city: CityWithCoodinateType, index: number) => (
+                <button
+                  key={index}
+                  value={city.name}
+                  style={{
+                    textAlign: "left",
+                    padding: "4px 8px",
+                    margin: "2px",
+                  }}
+                  onClick={(e) => handleClickCity(e, city)}
+                >
+                  {`${city.name} ${city.state ? city.state : city.country}`}
+                </button>
+              )
+            )}
+        </div>
       </div>
       {isSearch && (
         <>
@@ -160,6 +236,7 @@ const WeatherApp = () => {
             <div className="box">
               <div className="info-weather">
                 <div className="weather">
+                  <p className="cityname">{weatherData.name}</p>
                   <img src={getWIcon(weatherData.weatherMain)} alt="" />
                   <p className="temperature">
                     {Math.floor(weatherData.temperature)}

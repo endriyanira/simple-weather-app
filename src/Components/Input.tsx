@@ -70,7 +70,7 @@ const Input = () => {
               style={{ textAlign: "left", padding: "4px 8px", margin: "2px" }}
               onClick={(e) => handleClick(e, city)}
             >
-              {`${city.name} ${city.state && city.state}`}
+              {`${city.name} ${city.state ? city.state : city.country}`}
             </button>
           ))}
       </div>
