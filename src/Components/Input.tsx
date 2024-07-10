@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { debounce } from "../utils/debounce";
 
 interface CityWithCoodinateType {
