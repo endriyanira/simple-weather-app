@@ -11,6 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%);
 }
 
 .container {
@@ -20,16 +21,32 @@ body {
   border-radius: 16px;
   padding: 20px;
   color: white;
-  background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%);
+  /* background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%); */
   transition: height 0.6s ease;
 }
 
-.container.notfound {
+.container .notfound {
   height: 400px;
 }
 
-.container.default {
+.container .default {
   height: 100px;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    /* width: 100vw; */
+    height: 100vh;
+    border-radius: 0px;
+  }
+
+  .container.notfound {
+    height: 400px;
+  }
+
+  .container.default {
+    height: 100px;
+  }
 }
 
 .search-box {
@@ -89,6 +106,7 @@ body {
 
 .weather-box,
 .weather-details,
+.weather-forecast,
 .not-found {
   overflow: hidden;
   visibility: hidden;
@@ -96,6 +114,7 @@ body {
 
 .weather-box.active,
 .weather-details.active,
+.weather-forecast.active,
 .not-found.active {
   visibility: visible;
 }
@@ -124,6 +143,18 @@ body {
   width: 60%;
 }
 
+/* @media screen and (max-width: 600px) {
+  .weather-box img {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .weather-box img {
+    width: 40%;
+  }
+} */
+
 .weather-box .temperature {
   position: relative;
   font-size: 64px;
@@ -146,11 +177,15 @@ body {
 
 .weather-details {
   display: flex;
-  position: absolute;
-  bottom: 40px;
   left: 0;
   width: 100%;
   padding: 0 40px;
+}
+
+@media screen and (max-width: 600px) {
+  .weather-details {
+    bottom: 100px;
+  }
 }
 
 .weather-details .humidity,
@@ -192,6 +227,12 @@ body {
 .weather-details p {
   font-size: 14px;
   font-weight: 500;
+}
+
+@media screen and (max-width: 600px) {
+  .weather-details p {
+    font-size: 12px;
+  }
 }
 
 .weather-details .text {

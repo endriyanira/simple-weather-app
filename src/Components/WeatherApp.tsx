@@ -12,6 +12,8 @@ import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
+import Forecast from "./Forecast";
+import ForecastItemCard from "./ForecastItemCard";
 
 type WeatherDataType = {
   humidity: number;
@@ -234,7 +236,7 @@ const WeatherApp = () => {
           citiesCoordinate.length !== 0 &&
           citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
             <button
-              key={index}
+              key={`suggestedCity-${index.toString()}`}
               value={city.name}
               style={{
                 textAlign: "left",
@@ -253,12 +255,263 @@ const WeatherApp = () => {
               <div className="info-weather">
                 <div className="weather">
                   <p className="cityname">{weatherData.name}</p>
-                  <img src={getWIcon(weatherData.weatherMain)} alt="" />
+                  <img src={getWIcon(weatherData.weatherMain)} alt="icon" />
                   <p className="temperature">
                     {Math.floor(weatherData.temperature)}
                     <span>°C</span>
                   </p>
                   <p className="description">{weatherData.description}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`weather-forecast ${!isNotFound && "active"}`}
+            style={{
+              display: "flex",
+              bottom: "200px",
+              margin: "8px 16px",
+              padding: "4px 8px",
+              borderRadius: "10px",
+              backgroundColor: "rgba(0, 0, 0, .15)",
+            }}
+          >
+            <div
+              className="forecast"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <p
+                style={{
+                  margin: "8px 16px",
+                  fontWeight: "600",
+                  color: "rgba(255, 255, 255, .7)",
+                }}
+              >
+                TODAY'S FORECAST
+              </p>
+              <div
+                className="hourly-forecast"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "40px",
+                  justifyContent: "start",
+                  alignItems: "start",
+                  overflowX: "scroll",
+                  width: "350px",
+                  padding: "10px 60px 20px 20px",
+                }}
+              >
+                <ForecastItemCard
+                  date={"2024-07-11 07:00:00"}
+                  temp={20.47}
+                  main={"Clouds"}
+                />
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
+                </div>
+                <div
+                  className="forecast-item"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p
+                    className="hour"
+                    style={{
+                      fontWeight: "600",
+                      textWrap: "nowrap",
+                    }}
+                  >
+                    06
+                  </p>
+                  <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+                  <p
+                    className="temperature"
+                    style={{
+                      fontWeight: "600",
+                    }}
+                  >
+                    25<span>°C</span>
+                  </p>
                 </div>
               </div>
             </div>
