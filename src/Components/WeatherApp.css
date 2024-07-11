@@ -142,7 +142,7 @@ body {
   width: 60%;
 }
 
-/* @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .weather-box img {
     width: 60%;
   }
@@ -152,7 +152,7 @@ body {
   .weather-box img {
     width: 40%;
   }
-} */
+}
 
 .weather-box .temperature {
   position: relative;
@@ -174,11 +174,42 @@ body {
   text-transform: capitalize;
 }
 
+.weather-forecast {
+  display: flex;
+  margin: 40px 8px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.weather-forecast.forecast {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-forecast h2 {
+  font-size: 12px;
+  margin: 8px 16px;
+  font-weight: 600;
+  color: rgb(208, 208, 208);
+}
+
+.weather-forecast .hourly-forecast {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  justify-content: start;
+  align-items: start;
+  overflow-x: scroll;
+  width: 350px;
+  padding: 10px 60px 20px 20px;
+}
+
 .weather-details {
   display: flex;
   left: 0;
   width: 100%;
-  padding: 0 40px;
+  padding: 0 20px;
 }
 
 @media screen and (max-width: 600px) {
@@ -213,7 +244,7 @@ body {
 }
 
 .weather-details .icon {
-  font-size: 50px;
+  font-size: 30px;
   margin-right: 10px;
 }
 

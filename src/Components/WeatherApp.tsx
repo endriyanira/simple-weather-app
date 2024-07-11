@@ -6,7 +6,7 @@ import { FaSearch } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
-import cloud_icon from "../Assets/cloud.png";
+import cloud_icon_day from "../Assets/icon/day/cloudD.png";
 import mist_icon from "../Assets/mist.png";
 import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
@@ -261,13 +261,13 @@ const WeatherApp = () => {
       case "Snow":
         return snow_icon;
       case "Clouds":
-        return cloud_icon;
+        return cloud_icon_day;
       case "Mist":
         return mist_icon;
       case "Haze":
         return mist_icon;
       default:
-        return cloud_icon;
+        return cloud_icon_day;
     }
   };
 
@@ -340,46 +340,10 @@ const WeatherApp = () => {
               </div>
             </div>
           </div>
-          <div
-            className={`weather-forecast ${!isNotFound && "active"}`}
-            style={{
-              display: "flex",
-              bottom: "200px",
-              margin: "8px 16px",
-              padding: "4px 8px",
-              borderRadius: "10px",
-              backgroundColor: "rgba(0, 0, 0, .15)",
-            }}
-          >
-            <div
-              className="forecast"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <p
-                style={{
-                  margin: "8px 16px",
-                  fontWeight: "600",
-                  color: "rgba(255, 255, 255, .7)",
-                }}
-              >
-                TODAY'S FORECAST
-              </p>
-              <div
-                className="hourly-forecast"
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "40px",
-                  justifyContent: "start",
-                  alignItems: "start",
-                  overflowX: "scroll",
-                  width: "350px",
-                  padding: "10px 60px 20px 20px",
-                }}
-              >
+          <div className={`weather-forecast ${!isNotFound && "active"}`}>
+            <div className="forecast">
+              <h2>TODAY'S FORECAST</h2>
+              <div className="hourly-forecast">
                 {forecastInfo.list.length !== 0 &&
                   forecastInfo.list.map(
                     (forecast: ForecastType, id: number) =>
