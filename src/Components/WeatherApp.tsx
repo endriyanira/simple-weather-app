@@ -6,12 +6,14 @@ import { FaSearch } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
-import cloud_icon from "../Assets/cloud.png";
+import cloud_icon_day from "../Assets/icon/day/cloudD.png";
 import mist_icon from "../Assets/mist.png";
 import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
+import Forecast from "./Forecast";
+import ForecastItemCard from "./ForecastItemCard";
 
 type WeatherDataType = {
   humidity: number;
@@ -75,6 +77,50 @@ interface CityWithCoodinateType {
   state?: string;
 }
 
+interface ForecastType {
+  dt: number;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    sea_level: number;
+    grnd_level: number;
+    humidity: number;
+    temp_kf: number;
+  };
+  weather: [
+    {
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }
+  ];
+  clouds: {
+    all: number;
+  };
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
+  };
+  visibility: number;
+  pop: number;
+  sys: {
+    pod: string;
+  };
+  dt_txt: string;
+}
+
+type ForecastDataResponse = {
+  cod: string;
+  message: number;
+  cnt: number;
+  list: ForecastType[];
+};
+
 const WeatherApp = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [citiesCoordinate, setCitiesCoordinate] = useState<
@@ -83,6 +129,12 @@ const WeatherApp = () => {
   const [selectedCoordinate, setSelectedCoordinate] = useState({
     lat: 0,
     lon: 0,
+  });
+  const [forecastInfo, setForecastInfo] = useState<ForecastDataResponse>({
+    cod: "",
+    message: 0,
+    cnt: 0,
+    list: [],
   });
 
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
@@ -99,11 +151,20 @@ const WeatherApp = () => {
     name: "",
   });
   const API_KEY = "f9327b0d53f73ccc3a6f94d0d8a2def2";
+  const today = new Date();
+
+  const isNotToday = (today: Date, date: Date): boolean => {
+    return (
+      today.getFullYear() !== date.getFullYear() ||
+      today.getMonth() !== date.getMonth() ||
+      today.getDate() !== date.getDate()
+    );
+  };
 
   const debouncedFetchCities = useCallback(
     debounce(async (searchTerm: string) => {
       const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=f9327b0d53f73ccc3a6f94d0d8a2def2&limit=5`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=${API_KEY}&limit=5`
       );
       const data: CityWithCoodinateType[] = await response.json();
       if (data.length === 0) {
@@ -176,6 +237,21 @@ const WeatherApp = () => {
     }
   };
 
+  const handleSearchForecastbyCoordinate = async () => {
+    try {
+      const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${selectedCoordinate.lat}&lon=${selectedCoordinate.lon}&appid=${API_KEY}&units=metric`;
+      const response = await fetch(URL, {
+        method: "GET",
+      });
+      const data = await response.json();
+      const dataResponse = data as ForecastDataResponse;
+      setForecastInfo(dataResponse);
+      console.log(forecastInfo);
+    } catch (error) {
+      setIsNotFound(true);
+    }
+  };
+
   const getWIcon = (weatherMain: string) => {
     switch (weatherMain) {
       case "Clear":
@@ -185,18 +261,19 @@ const WeatherApp = () => {
       case "Snow":
         return snow_icon;
       case "Clouds":
-        return cloud_icon;
+        return cloud_icon_day;
       case "Mist":
         return mist_icon;
       case "Haze":
         return mist_icon;
       default:
-        return cloud_icon;
+        return cloud_icon_day;
     }
   };
 
   useEffect(() => {
     handleSearchCity();
+    handleSearchForecastbyCoordinate();
   }, [selectedCoordinate]);
 
   return (
@@ -234,7 +311,7 @@ const WeatherApp = () => {
           citiesCoordinate.length !== 0 &&
           citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
             <button
-              key={index}
+              key={`suggestedCity-${index.toString()}`}
               value={city.name}
               style={{
                 textAlign: "left",
@@ -253,13 +330,32 @@ const WeatherApp = () => {
               <div className="info-weather">
                 <div className="weather">
                   <p className="cityname">{weatherData.name}</p>
-                  <img src={getWIcon(weatherData.weatherMain)} alt="" />
+                  <img src={getWIcon(weatherData.weatherMain)} alt="icon" />
                   <p className="temperature">
                     {Math.floor(weatherData.temperature)}
                     <span>°C</span>
                   </p>
                   <p className="description">{weatherData.description}</p>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className={`weather-forecast ${!isNotFound && "active"}`}>
+            <div className="forecast">
+              <h2>TODAY'S FORECAST</h2>
+              <div className="hourly-forecast">
+                {forecastInfo.list.length !== 0 &&
+                  forecastInfo.list.map(
+                    (forecast: ForecastType, id: number) =>
+                      !isNotToday(today, new Date(forecast.dt_txt)) && (
+                        <ForecastItemCard
+                          key={`forecastKey-${forecast.dt}-${id.toString()}`}
+                          date={forecast.dt_txt}
+                          temp={forecast.main.temp}
+                          main={forecast.weather[0].icon}
+                        />
+                      )
+                  )}
               </div>
             </div>
           </div>

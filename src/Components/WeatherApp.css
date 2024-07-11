@@ -11,6 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%);
 }
 
 .container {
@@ -20,16 +21,31 @@ body {
   border-radius: 16px;
   padding: 20px;
   color: white;
-  background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%);
+  /* background-image: linear-gradient(180deg, #130754 0%, #5936b4 100%); */
   transition: height 0.6s ease;
 }
 
-.container.notfound {
+.container .notfound {
   height: 400px;
 }
 
-.container.default {
+.container .default {
   height: 100px;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    height: 100vh;
+    border-radius: 0px;
+  }
+
+  .container.notfound {
+    height: 400px;
+  }
+
+  .container.default {
+    height: 100px;
+  }
 }
 
 .search-box {
@@ -89,6 +105,7 @@ body {
 
 .weather-box,
 .weather-details,
+.weather-forecast,
 .not-found {
   overflow: hidden;
   visibility: hidden;
@@ -96,6 +113,7 @@ body {
 
 .weather-box.active,
 .weather-details.active,
+.weather-forecast.active,
 .not-found.active {
   visibility: visible;
 }
@@ -124,6 +142,18 @@ body {
   width: 60%;
 }
 
+@media screen and (max-width: 600px) {
+  .weather-box img {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .weather-box img {
+    width: 40%;
+  }
+}
+
 .weather-box .temperature {
   position: relative;
   font-size: 64px;
@@ -144,13 +174,48 @@ body {
   text-transform: capitalize;
 }
 
+.weather-forecast {
+  display: flex;
+  margin: 40px 8px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.weather-forecast.forecast {
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-forecast h2 {
+  font-size: 12px;
+  margin: 8px 16px;
+  font-weight: 600;
+  color: rgb(208, 208, 208);
+}
+
+.weather-forecast .hourly-forecast {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  justify-content: start;
+  align-items: start;
+  overflow-x: scroll;
+  width: 350px;
+  padding: 10px 60px 20px 20px;
+}
+
 .weather-details {
   display: flex;
-  position: absolute;
-  bottom: 40px;
   left: 0;
   width: 100%;
-  padding: 0 40px;
+  padding: 0 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .weather-details {
+    bottom: 100px;
+  }
 }
 
 .weather-details .humidity,
@@ -179,7 +244,7 @@ body {
 }
 
 .weather-details .icon {
-  font-size: 50px;
+  font-size: 30px;
   margin-right: 10px;
 }
 
@@ -192,6 +257,12 @@ body {
 .weather-details p {
   font-size: 14px;
   font-weight: 500;
+}
+
+@media screen and (max-width: 600px) {
+  .weather-details p {
+    font-size: 12px;
+  }
 }
 
 .weather-details .text {
