@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
 import { BiWater } from "react-icons/bi";
 import { FiWind } from "react-icons/fi";
-import { FaSearch } from "react-icons/fa";
+import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import clear_icon from "../Assets/clear.png";
@@ -12,12 +12,13 @@ import rain_icon from "../Assets/rain.png";
 import snow_icon from "../Assets/snow.png";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
-import Forecast from "./Forecast";
 import ForecastItemCard from "./ForecastItemCard";
 
 type WeatherDataType = {
   humidity: number;
   windSpeed: number;
+  feelsLike: number;
+  visibility: number;
   location: string;
   temperature: number;
   description: string;
@@ -144,6 +145,8 @@ const WeatherApp = () => {
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
     windSpeed: 0,
+    feelsLike: 0,
+    visibility: 0,
     location: "",
     temperature: 0,
     description: "",
@@ -224,6 +227,8 @@ const WeatherApp = () => {
         ...weatherData,
         humidity: dataResponse.main.humidity,
         windSpeed: dataResponse.wind.speed,
+        feelsLike: dataResponse.main.feels_like,
+        visibility: dataResponse.visibility,
         location: dataResponse.name,
         temperature: dataResponse.main.temp,
         description: dataResponse.weather[0].description,
@@ -362,25 +367,47 @@ const WeatherApp = () => {
             </div>
           </div>
           <div className={`weather-details ${!isNotFound && "active"}`}>
-            <div className="humidity">
-              <div className="humidity-title">
-                <BiWater className="icon" />
-                <p>Humidity</p>
+            <div className="feels-like">
+              <div className="feelslike-title">
+                <FaTemperatureLow className="icon" />
+                <p>FEELS LIKE</p>
               </div>
               <div className="text">
-                <div className="info-humidity">
-                  <span>{weatherData.humidity}&nbsp;%</span>
+                <div className="info-wind">
+                  <span>{Math.floor(weatherData.feelsLike)}°</span>
                 </div>
               </div>
             </div>
             <div className="wind">
               <div className="wind-title">
                 <FiWind className="icon" />
-                <p>Wind Speed</p>
+                <p>WIND SPEED</p>
               </div>
               <div className="text">
                 <div className="info-wind">
                   <span>{weatherData.windSpeed}&nbsp;km/h</span>
+                </div>
+              </div>
+            </div>
+            <div className="humidity">
+              <div className="humidity-title">
+                <BiWater className="icon" />
+                <p>HUMIDITY</p>
+              </div>
+              <div className="text">
+                <div className="info-humidity">
+                  <span>{weatherData.humidity}%</span>
+                </div>
+              </div>
+            </div>
+            <div className="visibility">
+              <div className="visibility-title">
+                <FaEye className="icon" />
+                <p>VISIBILITY</p>
+              </div>
+              <div className="text">
+                <div className="info-visibility">
+                  <span>{weatherData.visibility}&nbsp;m</span>
                 </div>
               </div>
             </div>
