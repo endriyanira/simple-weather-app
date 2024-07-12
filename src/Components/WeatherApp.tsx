@@ -363,21 +363,25 @@ const WeatherApp = () => {
           </div>
           <div className={`weather-details ${!isNotFound && "active"}`}>
             <div className="humidity">
-              <BiWater className="icon" />
+              <div className="humidity-title">
+                <BiWater className="icon" />
+                <p>Humidity</p>
+              </div>
               <div className="text">
                 <div className="info-humidity">
                   <span>{weatherData.humidity}&nbsp;%</span>
                 </div>
-                <p>Humidity</p>
               </div>
             </div>
             <div className="wind">
-              <FiWind className="icon" />
+              <div className="wind-title">
+                <FiWind className="icon" />
+                <p>Wind Speed</p>
+              </div>
               <div className="text">
                 <div className="info-wind">
-                  <span>{weatherData.windSpeed}&nbsp;Km/h</span>
+                  <span>{weatherData.windSpeed}&nbsp;km/h</span>
                 </div>
-                <p>Wind Speed</p>
               </div>
             </div>
           </div>
