@@ -42,7 +42,6 @@ const Input = () => {
       lat: city.lat,
       lon: city.lon,
     });
-    console.log(selectedCoordinate);
   };
 
   return (
