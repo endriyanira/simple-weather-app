@@ -251,7 +251,6 @@ const WeatherApp = () => {
       const data = await response.json();
       const dataResponse = data as ForecastDataResponse;
       setForecastInfo(dataResponse);
-      console.log(forecastInfo);
     } catch (error) {
       setIsNotFound(true);
     }
