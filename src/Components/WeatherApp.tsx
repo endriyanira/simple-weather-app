@@ -341,21 +341,23 @@ const WeatherApp = () => {
             </div>
           </div>
           <div className={`weather-forecast ${!isNotFound && "active"}`}>
-            <div className="forecast">
-              <h2>TODAY'S FORECAST</h2>
-              <div className="hourly-forecast">
-                {forecastInfo.list.length !== 0 &&
-                  forecastInfo.list.map(
-                    (forecast: ForecastType, id: number) =>
-                      !isNotToday(today, new Date(forecast.dt_txt)) && (
-                        <ForecastItemCard
-                          key={`forecastKey-${forecast.dt}-${id.toString()}`}
-                          date={forecast.dt_txt}
-                          temp={forecast.main.temp}
-                          main={forecast.weather[0].icon}
-                        />
-                      )
-                  )}
+            <div className="forecast-box">
+              <div className="forecast">
+                <h2>TODAY'S FORECAST</h2>
+                <div className="hourly-forecast">
+                  {forecastInfo.list.length !== 0 &&
+                    forecastInfo.list.map(
+                      (forecast: ForecastType, id: number) =>
+                        !isNotToday(today, new Date(forecast.dt_txt)) && (
+                          <ForecastItemCard
+                            key={`forecastKey-${forecast.dt}-${id.toString()}`}
+                            date={forecast.dt_txt}
+                            temp={forecast.main.temp}
+                            main={forecast.weather[0].icon}
+                          />
+                        )
+                    )}
+                </div>
               </div>
             </div>
           </div>
