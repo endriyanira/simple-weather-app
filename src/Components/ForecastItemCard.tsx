@@ -1,15 +1,18 @@
 import React from "react";
 import clear_icon from "../Assets/clear.png";
+import { getWeatherIcon } from "../utils/weatherIcon";
 
 interface ForecastItemCardType {
   date: string;
   temp: number;
+  icon: string;
   main: string;
 }
 
 const ForecastItemCard: React.FC<ForecastItemCardType> = ({
   date,
   temp,
+  icon,
   main,
 }) => {
   const dateObject = new Date(date);
@@ -37,7 +40,7 @@ const ForecastItemCard: React.FC<ForecastItemCardType> = ({
       >
         {hour}
       </p>
-      <img src={clear_icon} alt="icon" style={{ width: "30px" }} />
+      <img src={getWeatherIcon(icon)} alt={main} style={{ width: "30px" }} />
       <p
         className="temperature"
         style={{

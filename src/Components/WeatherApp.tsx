@@ -5,11 +5,7 @@ import { FiWind } from "react-icons/fi";
 import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
-import clear_icon from "../Assets/clear.png";
-import cloud_icon_day from "../Assets/icon/day/cloudD.png";
-import mist_icon from "../Assets/mist.png";
-import rain_icon from "../Assets/rain.png";
-import snow_icon from "../Assets/snow.png";
+import { getWeatherIcon } from "../utils/weatherIcon";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
 import ForecastItemCard from "./ForecastItemCard";
@@ -22,6 +18,7 @@ type WeatherDataType = {
   location: string;
   temperature: number;
   description: string;
+  icon: string;
   weatherMain: string;
   name: string;
 };
@@ -150,6 +147,7 @@ const WeatherApp = () => {
     location: "",
     temperature: 0,
     description: "",
+    icon: "",
     weatherMain: "",
     name: "",
   });
@@ -233,6 +231,7 @@ const WeatherApp = () => {
         temperature: dataResponse.main.temp,
         description: dataResponse.weather[0].description,
         weatherMain: dataResponse.weather[0].main,
+        icon: dataResponse.weather[0].icon,
       });
       setIsCitySelected(true);
     } catch (error) {
@@ -253,25 +252,6 @@ const WeatherApp = () => {
       setForecastInfo(dataResponse);
     } catch (error) {
       setIsNotFound(true);
-    }
-  };
-
-  const getWIcon = (weatherMain: string) => {
-    switch (weatherMain) {
-      case "Clear":
-        return clear_icon;
-      case "Rain":
-        return rain_icon;
-      case "Snow":
-        return snow_icon;
-      case "Clouds":
-        return cloud_icon_day;
-      case "Mist":
-        return mist_icon;
-      case "Haze":
-        return mist_icon;
-      default:
-        return cloud_icon_day;
     }
   };
 
@@ -334,7 +314,10 @@ const WeatherApp = () => {
               <div className="info-weather">
                 <div className="weather">
                   <p className="cityname">{weatherData.name}</p>
-                  <img src={getWIcon(weatherData.weatherMain)} alt="icon" />
+                  <img
+                    src={getWeatherIcon(weatherData.icon)}
+                    alt={weatherData.icon}
+                  />
                   <p className="temperature">
                     {Math.floor(weatherData.temperature)}
                     <span>°C</span>
@@ -357,7 +340,8 @@ const WeatherApp = () => {
                             key={`forecastKey-${forecast.dt}-${id.toString()}`}
                             date={forecast.dt_txt}
                             temp={forecast.main.temp}
-                            main={forecast.weather[0].icon}
+                            icon={forecast.weather[0].icon}
+                            main={forecast.weather[0].main}
                           />
                         )
                     )}
