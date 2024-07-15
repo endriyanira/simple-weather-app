@@ -1,5 +1,4 @@
 import React from "react";
-import clear_icon from "../Assets/clear.png";
 import { getWeatherIcon } from "../utils/weatherIcon";
 
 interface ForecastItemCardType {
