@@ -28,7 +28,8 @@ const ForecastItemCard: React.FC<ForecastItemCardType> = ({
         flexDirection: "column",
         gap: "10px",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
+        height: "105px",
       }}
     >
       <p
