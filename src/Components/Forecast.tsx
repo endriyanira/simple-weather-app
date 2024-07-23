@@ -4,10 +4,15 @@ import { ForecastDataResponse, ForecastType } from "./WeatherApp";
 
 interface ForecastCompType {
   isNotFound: boolean;
+  isChangeCity: boolean;
   forecastInfo: ForecastDataResponse;
 }
 
-const Forecast: React.FC<ForecastCompType> = ({ isNotFound, forecastInfo }) => {
+const Forecast: React.FC<ForecastCompType> = ({
+  isNotFound,
+  isChangeCity,
+  forecastInfo,
+}) => {
   const today = new Date();
 
   const isNotToday = (today: Date, date: Date): boolean => {
@@ -18,7 +23,9 @@ const Forecast: React.FC<ForecastCompType> = ({ isNotFound, forecastInfo }) => {
     );
   };
   return (
-    <div className={`weather-forecast ${!isNotFound && "active"}`}>
+    <div
+      className={`weather-forecast ${!isNotFound && isChangeCity && "active"}`}
+    >
       <div className="forecast-box">
         <div className="forecast">
           <h2>TODAY'S FORECAST</h2>
