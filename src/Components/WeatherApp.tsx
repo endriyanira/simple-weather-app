@@ -138,6 +138,7 @@ const WeatherApp = () => {
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
@@ -155,15 +156,33 @@ const WeatherApp = () => {
 
   const debouncedFetchCities = useCallback(
     debounce(async (searchTerm: string) => {
-      const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=${API_KEY}&limit=5`
-      );
-      const data: CityWithCoodinateType[] = await response.json();
-      if (data.length === 0) {
-        setIsNotFound(true);
-      } else {
-        setCitiesCoordinate(data);
-        setIsCitySelected(false);
+      try {
+        if (searchTerm.length < 3) {
+          return;
+        }
+        const response = await fetch(
+          `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=${API_KEY}&limit=5`
+        );
+        if (!response.ok) {
+          if (response.status === 400) {
+            setError("Bad Request: The request was invalid.");
+            setIsNotFound(true);
+          } else {
+            setError(`Error: ${response.status} ${response.statusText}`);
+            setIsNotFound(true);
+          }
+          return;
+        }
+
+        const data: CityWithCoodinateType[] = await response.json();
+        if (data.length === 0) {
+          setIsNotFound(true);
+        } else {
+          setCitiesCoordinate(data);
+          setIsCitySelected(false);
+        }
+      } catch (error) {
+        setError("Network error or other issues.");
       }
     }, 300),
     []
@@ -298,7 +317,7 @@ const WeatherApp = () => {
             </button>
           ))}
       </div>
-      {isSearch && (
+      {isSearch && !isNotFound && (
         <>
           <div className={`weather-box ${!isNotFound && "active"}`}>
             <div className="box">
