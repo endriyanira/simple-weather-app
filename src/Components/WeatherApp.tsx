@@ -6,9 +6,10 @@ import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import { getWeatherIcon } from "../utils/weatherIcon";
-import not_found from "../Assets/404.png";
-import "./WeatherApp.css";
 import Forecast from "./Forecast";
+import NotFound from "./NotFound";
+
+import "./WeatherApp.css";
 
 type WeatherDataType = {
   humidity: number;
@@ -137,6 +138,7 @@ const WeatherApp = () => {
 
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [isChangeCity, setIsChangeCity] = useState<boolean>(false);
   const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
@@ -207,6 +209,7 @@ const WeatherApp = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     city: CityWithCoodinateType
   ) => {
+    setIsChangeCity(false);
     setSelectedCoordinate({
       lat: city.lat,
       lon: city.lon,
@@ -218,6 +221,7 @@ const WeatherApp = () => {
     if (selectedCoordinate.lat === 0) {
       setIsSearch(false);
     } else {
+      setIsChangeCity(true);
       setIsSearch(true);
     }
     if (searchTerm.length === 0) {
@@ -319,7 +323,9 @@ const WeatherApp = () => {
       </div>
       {isSearch && (
         <>
-          <div className={`weather-box ${!isNotFound && "active"}`}>
+          <div
+            className={`weather-box ${!isNotFound && isChangeCity && "active"}`}
+          >
             <div className="box">
               <div className="info-weather">
                 <div className="weather">
@@ -337,8 +343,16 @@ const WeatherApp = () => {
               </div>
             </div>
           </div>
-          <Forecast isNotFound={isNotFound} forecastInfo={forecastInfo} />
-          <div className={`weather-details ${!isNotFound && "active"}`}>
+          <Forecast
+            isNotFound={isNotFound}
+            isChangeCity={isChangeCity}
+            forecastInfo={forecastInfo}
+          />
+          <div
+            className={`weather-details ${
+              !isNotFound && isChangeCity && "active"
+            }`}
+          >
             <div className="feels-like">
               <div className="feelslike-title">
                 <FaTemperatureLow className="icon" />
@@ -384,12 +398,7 @@ const WeatherApp = () => {
               </div>
             </div>
           </div>
-          <div className={`not-found ${isNotFound && "active"}`}>
-            <div className="box">
-              <img src={not_found} alt="notFound" />
-              <p>Oops! Location not found!</p>
-            </div>
-          </div>
+          <NotFound isNotFound={isNotFound} />
         </>
       )}
     </div>
