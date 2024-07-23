@@ -317,7 +317,7 @@ const WeatherApp = () => {
             </button>
           ))}
       </div>
-      {isSearch && !isNotFound && (
+      {isSearch && (
         <>
           <div className={`weather-box ${!isNotFound && "active"}`}>
             <div className="box">
