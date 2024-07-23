@@ -8,7 +8,7 @@ import { debounce } from "../utils/debounce";
 import { getWeatherIcon } from "../utils/weatherIcon";
 import not_found from "../Assets/404.png";
 import "./WeatherApp.css";
-import ForecastItemCard from "./ForecastItemCard";
+import Forecast from "./Forecast";
 
 type WeatherDataType = {
   humidity: number;
@@ -75,7 +75,7 @@ interface CityWithCoodinateType {
   state?: string;
 }
 
-interface ForecastType {
+export interface ForecastType {
   dt: number;
   main: {
     temp: number;
@@ -112,7 +112,7 @@ interface ForecastType {
   dt_txt: string;
 }
 
-type ForecastDataResponse = {
+export type ForecastDataResponse = {
   cod: string;
   message: number;
   cnt: number;
@@ -152,15 +152,6 @@ const WeatherApp = () => {
     name: "",
   });
   const API_KEY = "f9327b0d53f73ccc3a6f94d0d8a2def2";
-  const today = new Date();
-
-  const isNotToday = (today: Date, date: Date): boolean => {
-    return (
-      today.getFullYear() !== date.getFullYear() ||
-      today.getMonth() !== date.getMonth() ||
-      today.getDate() !== date.getDate()
-    );
-  };
 
   const debouncedFetchCities = useCallback(
     debounce(async (searchTerm: string) => {
@@ -327,28 +318,7 @@ const WeatherApp = () => {
               </div>
             </div>
           </div>
-          <div className={`weather-forecast ${!isNotFound && "active"}`}>
-            <div className="forecast-box">
-              <div className="forecast">
-                <h2>TODAY'S FORECAST</h2>
-                <div className="hourly-forecast">
-                  {forecastInfo.list.length !== 0 &&
-                    forecastInfo.list.map(
-                      (forecast: ForecastType, id: number) =>
-                        !isNotToday(today, new Date(forecast.dt_txt)) && (
-                          <ForecastItemCard
-                            key={`forecastKey-${forecast.dt}-${id.toString()}`}
-                            date={forecast.dt_txt}
-                            temp={forecast.main.temp}
-                            icon={forecast.weather[0].icon}
-                            main={forecast.weather[0].main}
-                          />
-                        )
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
+          <Forecast isNotFound={isNotFound} forecastInfo={forecastInfo} />
           <div className={`weather-details ${!isNotFound && "active"}`}>
             <div className="feels-like">
               <div className="feelslike-title">
