@@ -103,6 +103,34 @@ body {
   margin: 40px 0;
 }
 
+.weather-suggested-cities {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 200;
+  padding: 4px;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.weather-suggested-cities li {
+  text-align: left;
+  padding: 4px 8px;
+  list-style: none;
+}
+
+.weather-suggested-cities li:hover {
+  background-color: rgb(55, 95, 169);
+}
+
+.weather-suggested-cities p {
+  color: white;
+  font-size: 14px;
+}
+
 .weather-box,
 .weather-details,
 .weather-forecast,
