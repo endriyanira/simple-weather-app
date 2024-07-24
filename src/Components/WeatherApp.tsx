@@ -140,6 +140,7 @@ const WeatherApp = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isChangeCity, setIsChangeCity] = useState<boolean>(false);
   const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
+  const [showSuggestedCity, setShowSuggestedCity] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
@@ -181,6 +182,7 @@ const WeatherApp = () => {
           setIsNotFound(true);
         } else {
           setCitiesCoordinate(data);
+          setShowSuggestedCity(true);
           setIsCitySelected(false);
         }
       } catch (error) {
@@ -203,12 +205,10 @@ const WeatherApp = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     setSearchTerm("");
+    setShowSuggestedCity(false);
   };
 
-  const handleClickCity = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    city: CityWithCoodinateType
-  ) => {
+  const handleClickCity = (city: CityWithCoodinateType) => {
     setIsChangeCity(false);
     setSelectedCoordinate({
       lat: city.lat,
@@ -248,6 +248,7 @@ const WeatherApp = () => {
         icon: dataResponse.weather[0].icon,
       });
       setIsCitySelected(true);
+      setShowSuggestedCity(false);
     } catch (error) {
       if (error instanceof Error) {
         setIsNotFound(true);
@@ -295,32 +296,28 @@ const WeatherApp = () => {
           </button>
         )}
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          position: "absolute",
-          zIndex: "200",
-          padding: "4px",
-        }}
-      >
-        {searchTerm !== "" &&
-          !isCitySelected &&
-          citiesCoordinate.length !== 0 &&
-          citiesCoordinate.map((city: CityWithCoodinateType, index: number) => (
-            <button
-              key={`suggestedCity-${index.toString()}`}
-              value={city.name}
-              style={{
-                textAlign: "left",
-                padding: "4px 8px",
-              }}
-              onClick={(e) => handleClickCity(e, city)}
-            >
-              {`${city.name} ${city.state ? city.state : city.country}`}
-            </button>
-          ))}
-      </div>
+      {citiesCoordinate.length !== 0 && showSuggestedCity && (
+        <ul className="weather-suggested-cities">
+          {searchTerm !== "" &&
+            !isCitySelected &&
+            citiesCoordinate.length !== 0 &&
+            citiesCoordinate.map(
+              (city: CityWithCoodinateType, index: number) => (
+                <li
+                  className="suggested-city"
+                  key={`suggestedCity-${index.toString()}`}
+                  value={city.name}
+                  onClick={() => handleClickCity(city)}
+                >
+                  <p>{`${city.name} ${
+                    city.state ? city.state : city.country
+                  }`}</p>
+                </li>
+              )
+            )}
+        </ul>
+      )}
+
       {isSearch && (
         <>
           <div
