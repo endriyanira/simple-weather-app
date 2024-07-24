@@ -34,8 +34,9 @@ const ForecastItemCard: React.FC<ForecastItemCardType> = ({
       <p
         className="hour"
         style={{
-          fontWeight: "600",
+          fontWeight: "500",
           textWrap: "nowrap",
+          fontSize: "14px",
         }}
       >
         {hour}
@@ -44,7 +45,8 @@ const ForecastItemCard: React.FC<ForecastItemCardType> = ({
       <p
         className="temperature"
         style={{
-          fontWeight: "600",
+          fontWeight: "500",
+          fontSize: "16px",
         }}
       >
         {Math.floor(temp)}
