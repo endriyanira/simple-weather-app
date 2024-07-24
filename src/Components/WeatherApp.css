@@ -284,7 +284,6 @@ body {
 .weather-details.active .humidity,
 .weather-details.active .wind {
   border-radius: 10px;
-  padding: 4px;
   height: 160px;
   width: 160px;
   padding: 10px;
@@ -314,7 +313,7 @@ body {
 }
 
 .weather-details .icon {
-  font-size: 20px;
+  font-size: 15px;
   margin-right: 10px;
   color: rgb(208, 208, 208);
 }
@@ -327,7 +326,7 @@ body {
 
 .weather-details p {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: rgb(208, 208, 208);
 }
 
