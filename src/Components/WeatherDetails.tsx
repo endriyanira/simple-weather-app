@@ -23,44 +23,53 @@ const WeatherDetails: React.FC<WeatherDetailsType> = ({
       <div className="feels-like">
         <div className="feelslike-title">
           <FaTemperatureLow className="icon" />
-          <p>FEELS LIKE</p>
+          <h1>FEELS LIKE</h1>
         </div>
         <div className="text">
           <div className="info-wind">
-            <span>{Math.floor(weatherData.feelsLike)}°</span>
+            <p>{Math.floor(weatherData.feelsLike)}°</p>
           </div>
         </div>
       </div>
       <div className="wind">
         <div className="wind-title">
           <FiWind className="icon" />
-          <p>WIND SPEED</p>
+          <h1>WIND SPEED</h1>
         </div>
         <div className="text">
           <div className="info-wind">
-            <span>{weatherData.windSpeed}&nbsp;km/h</span>
+            <p>
+              {weatherData.windSpeed}
+              <span>&nbsp;km/h</span>
+            </p>
           </div>
         </div>
       </div>
       <div className="humidity">
         <div className="humidity-title">
           <BiWater className="icon" />
-          <p>HUMIDITY</p>
+          <h1>HUMIDITY</h1>
         </div>
         <div className="text">
           <div className="info-humidity">
-            <span>{weatherData.humidity}%</span>
+            <p>
+              {weatherData.humidity}
+              <span>&nbsp;%</span>
+            </p>
           </div>
         </div>
       </div>
       <div className="visibility">
         <div className="visibility-title">
           <FaEye className="icon" />
-          <p>VISIBILITY</p>
+          <h1>VISIBILITY</h1>
         </div>
         <div className="text">
           <div className="info-visibility">
-            <span>{weatherData.visibility}&nbsp;m</span>
+            <p>
+              {Math.floor(weatherData.visibility / 1000)}
+              <span>&nbsp;km</span>
+            </p>
           </div>
         </div>
       </div>
