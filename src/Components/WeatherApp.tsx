@@ -14,6 +14,7 @@ import NotFound from "./NotFound";
 import "./WeatherApp.css";
 import WeatherDetails from "./WeatherDetails";
 import WeatherMainBox from "./WeatherMainBox";
+import SuggestedCity from "./SuggestedCity";
 
 export type WeatherDataType = {
   humidity: number;
@@ -72,7 +73,7 @@ type DataResponseType = {
   cod: number;
 };
 
-interface CityWithCoodinateType {
+export interface CityWithCoodinateType {
   name: string;
   lat: number;
   lon: number;
@@ -311,16 +312,11 @@ const WeatherApp = () => {
             citiesCoordinate.length !== 0 &&
             citiesCoordinate.map(
               (city: CityWithCoodinateType, index: number) => (
-                <li
-                  className="suggested-city"
+                <SuggestedCity
                   key={`suggestedCity-${index.toString()}`}
-                  value={city.name}
-                  onClick={() => handleClickCity(city)}
-                >
-                  <p>{`${city.name} ${
-                    city.state ? city.state : city.country
-                  }`}</p>
-                </li>
+                  city={city}
+                  handleClickCity={handleClickCity}
+                />
               )
             )}
         </ul>
