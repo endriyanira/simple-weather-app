@@ -6,13 +6,34 @@ Create a web-based weather application that allows users to input a location (ci
 
 You need to get your own api key and replace it in WeatherApp.tsx file on line 80. Fir need to have your own account in [https://openweathermap.org/](https://openweathermap.org/) and use your own API key on the website.
 
-## Screenshoot
+## Features:
+
+- [x] Location Input: Provide a text input field where users can enter the name of a city.
+- [x] Weather Display: Once the user submits the location, fetch the weather data from a weather API (I used [OpenWeatherMap API](https://openweathermap.org/)).
+- [x] Current Weather: Display the current temperature, weather conditions (e.g., suny, cloudy, rainy), feels like, wind speed, humidity, and visibility).
+- [x] Background Images: Dynamically change the background image based on the current weather conditions (e.g., sunny for clear skies, rainy for rainy weather, etc).
+- [x] Forecast: Show a forecast for today (3 hour forecast, that's because of the limitations given to free plan users).
+- [x] Responsive Design: Ensure the application is responsive and works well on various devices(desktops, tablets, smartphones).
+- [x] Error Handling: Hnadle errors gracefully, such as invalid location input (it will show meaningful error message).
+- [x] UI/UX Design: Design an intuitive and user-friendly interface with appropriate icons and styling for weather conditions.
+
+## Optional Enhancements
+
+- Geolocation: Allow usrs to get weather information based on their current location using the browser's geolocation API.
+- Unit Conversion: Provide an option to switch between Celcius and Fahrenheit for temperature display.
+- Additional Weather Data: Display additional weather data such as sunrise/sunset times, UV index, or air quality index (if available from the API).
+
+## Screensho
 
 Here we have project screenshot :
 
-![1711942974047](image/README/1711942974047.png)
+![1721986938379](image/README/1721986938379.png)
 
-![1711943031944](image/README/1711943031944.png)
+![1721986974321](image/README/1721986974321.png)
+
+![1721987040526](image/README/1721987040526.png)
+
+![1721987018418](image/README/1721987018418.png)
 
 ## About the code
 
