@@ -192,7 +192,7 @@ const WeatherApp = () => {
       } catch (error) {
         setError("Network error or other issues.");
       }
-    }, 300),
+    }, 200),
     []
   );
 
@@ -239,23 +239,21 @@ const WeatherApp = () => {
       const data = await response.json();
       const dataResponse = data as DataResponseType;
       weatherBg(dataResponse.weather[0].icon);
-      setTimeout(() => {
-        setIsNotFound(false);
-        setWeatherData({
-          ...weatherData,
-          humidity: dataResponse.main.humidity,
-          windSpeed: dataResponse.wind.speed,
-          feelsLike: dataResponse.main.feels_like,
-          visibility: dataResponse.visibility,
-          location: dataResponse.name,
-          temperature: dataResponse.main.temp,
-          description: dataResponse.weather[0].description,
-          weatherMain: dataResponse.weather[0].main,
-          icon: dataResponse.weather[0].icon,
-        });
-        setIsCitySelected(true);
-        setShowSuggestedCity(false);
-      }, 200);
+      setIsNotFound(false);
+      setWeatherData({
+        ...weatherData,
+        humidity: dataResponse.main.humidity,
+        windSpeed: dataResponse.wind.speed,
+        feelsLike: dataResponse.main.feels_like,
+        visibility: dataResponse.visibility,
+        location: dataResponse.name,
+        temperature: dataResponse.main.temp,
+        description: dataResponse.weather[0].description,
+        weatherMain: dataResponse.weather[0].main,
+        icon: dataResponse.weather[0].icon,
+      });
+      setIsCitySelected(true);
+      setShowSuggestedCity(false);
     } catch (error) {
       if (error instanceof Error) {
         setIsNotFound(true);
