@@ -6,6 +6,8 @@ import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
 import { getWeatherIcon } from "../utils/weatherIcon";
+import { weatherBg } from "../utils/weatherBg";
+
 import Forecast from "./Forecast";
 import NotFound from "./NotFound";
 
@@ -174,12 +176,14 @@ const WeatherApp = () => {
             setError(`Error: ${response.status} ${response.statusText}`);
             setIsNotFound(true);
           }
+          setShowSuggestedCity(false);
           return;
         }
 
         const data: CityWithCoodinateType[] = await response.json();
         if (data.length === 0) {
           setIsNotFound(true);
+          setShowSuggestedCity(false);
         } else {
           setCitiesCoordinate(data);
           setShowSuggestedCity(true);
@@ -234,21 +238,24 @@ const WeatherApp = () => {
       });
       const data = await response.json();
       const dataResponse = data as DataResponseType;
-      setIsNotFound(false);
-      setWeatherData({
-        ...weatherData,
-        humidity: dataResponse.main.humidity,
-        windSpeed: dataResponse.wind.speed,
-        feelsLike: dataResponse.main.feels_like,
-        visibility: dataResponse.visibility,
-        location: dataResponse.name,
-        temperature: dataResponse.main.temp,
-        description: dataResponse.weather[0].description,
-        weatherMain: dataResponse.weather[0].main,
-        icon: dataResponse.weather[0].icon,
-      });
-      setIsCitySelected(true);
-      setShowSuggestedCity(false);
+      weatherBg(dataResponse.weather[0].icon);
+      setTimeout(() => {
+        setIsNotFound(false);
+        setWeatherData({
+          ...weatherData,
+          humidity: dataResponse.main.humidity,
+          windSpeed: dataResponse.wind.speed,
+          feelsLike: dataResponse.main.feels_like,
+          visibility: dataResponse.visibility,
+          location: dataResponse.name,
+          temperature: dataResponse.main.temp,
+          description: dataResponse.weather[0].description,
+          weatherMain: dataResponse.weather[0].main,
+          icon: dataResponse.weather[0].icon,
+        });
+        setIsCitySelected(true);
+        setShowSuggestedCity(false);
+      }, 200);
     } catch (error) {
       if (error instanceof Error) {
         setIsNotFound(true);
@@ -271,6 +278,7 @@ const WeatherApp = () => {
   };
 
   useEffect(() => {
+    weatherBg("");
     handleSearchCity();
     handleSearchForecastbyCoordinate();
   }, [selectedCoordinate]);
