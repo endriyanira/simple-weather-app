@@ -342,13 +342,11 @@ body {
   display: inline-block;
   font-size: 30px;
   font-weight: 500;
-  color: rgb(208, 208, 208);
 }
 
 .weather-details span {
   font-size: 16px;
   font-weight: 600;
-  color: rgb(208, 208, 208);
 }
 
 .weather-details .text {
