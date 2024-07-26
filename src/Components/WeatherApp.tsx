@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
-import { BiWater } from "react-icons/bi";
-import { FiWind } from "react-icons/fi";
-import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
-import { getWeatherIcon } from "../utils/weatherIcon";
 import { weatherBg } from "../utils/weatherBg";
 
 import Forecast from "./Forecast";

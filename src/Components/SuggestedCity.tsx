@@ -12,7 +12,10 @@ const SuggestedCity: React.FC<SuggestedCityType> = ({
 }) => {
   return (
     <li className="suggested-city" value={city.name}>
-      <button onClick={() => handleClickCity(city)}>
+      <button
+        style={{ background: "transparent", border: "none" }}
+        onClick={() => handleClickCity(city)}
+      >
         <p>{`${city.name} ${city.state ? city.state : city.country}`}</p>
       </button>
     </li>
