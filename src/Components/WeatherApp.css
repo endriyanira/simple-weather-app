@@ -290,7 +290,7 @@ body {
 .weather-details.active .humidity,
 .weather-details.active .wind {
   border-radius: 10px;
-  height: 160px;
+  height: 120px;
   width: 160px;
   padding: 10px;
   transform: translateY(0%);
@@ -332,14 +332,21 @@ body {
   color: rgb(208, 208, 208);
 }
 
-.weather-details span {
-  display: inline-block;
-  font-size: 24px;
-  font-weight: 500;
+.weather-details h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(208, 208, 208);
 }
 
 .weather-details p {
-  font-size: 14px;
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 500;
+  color: rgb(208, 208, 208);
+}
+
+.weather-details span {
+  font-size: 16px;
   font-weight: 600;
   color: rgb(208, 208, 208);
 }

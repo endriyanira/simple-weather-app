@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
-import { BiWater } from "react-icons/bi";
-import { FiWind } from "react-icons/fi";
-import { FaEye, FaTemperatureLow } from "react-icons/fa";
 
 import { debounce } from "../utils/debounce";
-import { getWeatherIcon } from "../utils/weatherIcon";
 import { weatherBg } from "../utils/weatherBg";
 
 import Forecast from "./Forecast";
@@ -14,6 +10,7 @@ import NotFound from "./NotFound";
 import "./WeatherApp.css";
 import WeatherDetails from "./WeatherDetails";
 import WeatherMainBox from "./WeatherMainBox";
+import SuggestedCity from "./SuggestedCity";
 
 export type WeatherDataType = {
   humidity: number;
@@ -72,7 +69,7 @@ type DataResponseType = {
   cod: number;
 };
 
-interface CityWithCoodinateType {
+export interface CityWithCoodinateType {
   name: string;
   lat: number;
   lon: number;
@@ -311,16 +308,11 @@ const WeatherApp = () => {
             citiesCoordinate.length !== 0 &&
             citiesCoordinate.map(
               (city: CityWithCoodinateType, index: number) => (
-                <li
-                  className="suggested-city"
+                <SuggestedCity
                   key={`suggestedCity-${index.toString()}`}
-                  value={city.name}
-                  onClick={() => handleClickCity(city)}
-                >
-                  <p>{`${city.name} ${
-                    city.state ? city.state : city.country
-                  }`}</p>
-                </li>
+                  city={city}
+                  handleClickCity={handleClickCity}
+                />
               )
             )}
         </ul>
