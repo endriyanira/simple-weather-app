@@ -12,8 +12,10 @@ import Forecast from "./Forecast";
 import NotFound from "./NotFound";
 
 import "./WeatherApp.css";
+import WeatherDetails from "./WeatherDetails";
+import WeatherMainBox from "./WeatherMainBox";
 
-type WeatherDataType = {
+export type WeatherDataType = {
   humidity: number;
   windSpeed: number;
   feelsLike: number;
@@ -326,81 +328,21 @@ const WeatherApp = () => {
 
       {isSearch && (
         <>
-          <div
-            className={`weather-box ${!isNotFound && isChangeCity && "active"}`}
-          >
-            <div className="box">
-              <div className="info-weather">
-                <div className="weather">
-                  <p className="cityname">{weatherData.name}</p>
-                  <img
-                    src={getWeatherIcon(weatherData.icon)}
-                    alt={weatherData.icon}
-                  />
-                  <p className="temperature">
-                    {Math.floor(weatherData.temperature)}
-                    <span>°C</span>
-                  </p>
-                  <p className="description">{weatherData.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <WeatherMainBox
+            isNotFound={isNotFound}
+            isChangeCity={isChangeCity}
+            weatherData={weatherData}
+          />
           <Forecast
             isNotFound={isNotFound}
             isChangeCity={isChangeCity}
             forecastInfo={forecastInfo}
           />
-          <div
-            className={`weather-details ${
-              !isNotFound && isChangeCity && "active"
-            }`}
-          >
-            <div className="feels-like">
-              <div className="feelslike-title">
-                <FaTemperatureLow className="icon" />
-                <p>FEELS LIKE</p>
-              </div>
-              <div className="text">
-                <div className="info-wind">
-                  <span>{Math.floor(weatherData.feelsLike)}°</span>
-                </div>
-              </div>
-            </div>
-            <div className="wind">
-              <div className="wind-title">
-                <FiWind className="icon" />
-                <p>WIND SPEED</p>
-              </div>
-              <div className="text">
-                <div className="info-wind">
-                  <span>{weatherData.windSpeed}&nbsp;km/h</span>
-                </div>
-              </div>
-            </div>
-            <div className="humidity">
-              <div className="humidity-title">
-                <BiWater className="icon" />
-                <p>HUMIDITY</p>
-              </div>
-              <div className="text">
-                <div className="info-humidity">
-                  <span>{weatherData.humidity}%</span>
-                </div>
-              </div>
-            </div>
-            <div className="visibility">
-              <div className="visibility-title">
-                <FaEye className="icon" />
-                <p>VISIBILITY</p>
-              </div>
-              <div className="text">
-                <div className="info-visibility">
-                  <span>{weatherData.visibility}&nbsp;m</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <WeatherDetails
+            isNotFound={isNotFound}
+            isChangeCity={isChangeCity}
+            weatherData={weatherData}
+          />
           <NotFound isNotFound={isNotFound} />
         </>
       )}
