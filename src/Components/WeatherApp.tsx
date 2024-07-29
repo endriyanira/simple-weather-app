@@ -12,6 +12,7 @@ import WeatherMainBox from "./WeatherInfo/WeatherMainBox";
 import WeatherDetails from "./WeatherInfo/WeatherDetails";
 import SuggestedCity from "./SuggestedCity/SuggestedCity";
 import { getGeolocation } from "../utils/geolocation";
+import Spinner from "./Spinner/Spinner";
 
 export type WeatherDataType = {
   humidity: number;
@@ -169,6 +170,7 @@ const WeatherApp = () => {
         if (searchTerm.length < 3) {
           return;
         }
+        setIsLoadingCity(true);
         const response = await fetch(
           `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=${API_KEY}&limit=5`
         );
@@ -193,10 +195,11 @@ const WeatherApp = () => {
           setShowSuggestedCity(true);
           setIsCitySelected(false);
         }
+        setIsLoadingCity(false);
       } catch (error) {
         setError("Network error or other issues.");
+        setIsLoadingCity(false);
       }
-      setIsLoadingCity(false);
     }, 200),
     []
   );
@@ -205,7 +208,6 @@ const WeatherApp = () => {
     const { value } = e.target;
     setSearchTerm(value);
     if (value) {
-      setIsLoadingCity(true);
       setIsCitySelected(false);
       debouncedFetchCities(value);
     }
@@ -323,6 +325,7 @@ const WeatherApp = () => {
           onChange={handleChangeCityInput}
           value={searchTerm}
         />
+        {isLoadingCity && <Spinner />}
         {searchTerm !== "" && (
           <button onClick={handleResetInput}>
             <FaDeleteLeft />
