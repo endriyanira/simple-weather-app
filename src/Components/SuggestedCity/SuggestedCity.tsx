@@ -1,5 +1,5 @@
 import React from "react";
-import { CityWithCoodinateType } from "./WeatherApp";
+import { CityWithCoodinateType } from "../WeatherApp";
 
 interface SuggestedCityType {
   city: CityWithCoodinateType;

@@ -2,8 +2,7 @@ import React from "react";
 import { FaEye, FaTemperatureLow } from "react-icons/fa";
 import { FiWind } from "react-icons/fi";
 import { BiWater } from "react-icons/bi";
-
-import { WeatherDataType } from "./WeatherApp";
+import { WeatherDataType } from "../WeatherApp";
 
 interface WeatherDetailsType {
   isNotFound: boolean;

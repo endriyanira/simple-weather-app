@@ -1,6 +1,6 @@
 import React from "react";
+import { ForecastDataResponse, ForecastType } from "../WeatherApp";
 import ForecastItemCard from "./ForecastItemCard";
-import { ForecastDataResponse, ForecastType } from "./WeatherApp";
 
 interface ForecastCompType {
   isNotFound: boolean;

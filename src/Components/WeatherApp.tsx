@@ -4,13 +4,15 @@ import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
 import { debounce } from "../utils/debounce";
 import { weatherBg } from "../utils/weatherBg";
 
-import Forecast from "./Forecast";
 import NotFound from "./NotFound";
 
 import "./WeatherApp.css";
-import WeatherDetails from "./WeatherDetails";
-import WeatherMainBox from "./WeatherMainBox";
-import SuggestedCity from "./SuggestedCity";
+import Forecast from "./Forecast/Forecast";
+import WeatherMainBox from "./WeatherInfo/WeatherMainBox";
+import WeatherDetails from "./WeatherInfo/WeatherDetails";
+import SuggestedCity from "./SuggestedCity/SuggestedCity";
+import { getGeolocation } from "../utils/geolocation";
+import Spinner from "./Spinner/Spinner";
 
 export type WeatherDataType = {
   humidity: number;
@@ -70,7 +72,7 @@ type DataResponseType = {
 };
 
 export interface CityWithCoodinateType {
-  name: string;
+  name?: string;
   lat: number;
   lon: number;
   country?: string;
@@ -126,10 +128,11 @@ const WeatherApp = () => {
   const [citiesCoordinate, setCitiesCoordinate] = useState<
     CityWithCoodinateType[]
   >([]);
-  const [selectedCoordinate, setSelectedCoordinate] = useState({
-    lat: 0,
-    lon: 0,
-  });
+  const [selectedCoordinate, setSelectedCoordinate] =
+    useState<CityWithCoodinateType>({
+      lat: 0,
+      lon: 0,
+    });
   const [forecastInfo, setForecastInfo] = useState<ForecastDataResponse>({
     cod: "",
     message: 0,
@@ -137,12 +140,15 @@ const WeatherApp = () => {
     list: [],
   });
 
+  const [isLoadingCity, setIsLoadingCity] = useState<boolean>(false);
+  const [isLoadingDetails, setIsLoadingDetails] = useState<boolean>(false);
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isChangeCity, setIsChangeCity] = useState<boolean>(false);
   const [isCitySelected, setIsCitySelected] = useState<boolean>(false);
   const [showSuggestedCity, setShowSuggestedCity] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  useState<boolean>(false);
 
   const [weatherData, setWeatherData] = useState<WeatherDataType>({
     humidity: 0,
@@ -164,6 +170,7 @@ const WeatherApp = () => {
         if (searchTerm.length < 3) {
           return;
         }
+        setIsLoadingCity(true);
         const response = await fetch(
           `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&appid=${API_KEY}&limit=5`
         );
@@ -188,8 +195,10 @@ const WeatherApp = () => {
           setShowSuggestedCity(true);
           setIsCitySelected(false);
         }
+        setIsLoadingCity(false);
       } catch (error) {
         setError("Network error or other issues.");
+        setIsLoadingCity(false);
       }
     }, 200),
     []
@@ -217,17 +226,17 @@ const WeatherApp = () => {
       lat: city.lat,
       lon: city.lon,
     });
-    setWeatherData({ ...weatherData, name: city.name });
+    setWeatherData({ ...weatherData, name: city.name! });
   };
 
   const handleSearchCity = async () => {
-    if (selectedCoordinate.lat === 0) {
+    if (selectedCoordinate.lat === 0 || selectedCoordinate.lon === 0) {
       setIsSearch(false);
     } else {
       setIsChangeCity(true);
       setIsSearch(true);
     }
-    if (searchTerm.length === 0) {
+    if (searchTerm.length === 0 && selectedCoordinate.lat === 0) {
       return [];
     }
     try {
@@ -274,10 +283,31 @@ const WeatherApp = () => {
     }
   };
 
+  const handleGetLocation = async () => {
+    try {
+      const coords = await getGeolocation();
+      setSelectedCoordinate(coords);
+      setError("");
+    } catch (err) {
+      setSelectedCoordinate({
+        lat: 0,
+        lon: 0,
+      });
+      setError("Error getting geolocation coordinates:");
+    }
+  };
+
   useEffect(() => {
     weatherBg("");
+    handleGetLocation();
+  }, []);
+
+  useEffect(() => {
     handleSearchCity();
     handleSearchForecastbyCoordinate();
+    if (weatherData.name === "") {
+      setWeatherData({ ...weatherData, name: "Your Location" });
+    }
   }, [selectedCoordinate]);
 
   return (
@@ -295,6 +325,7 @@ const WeatherApp = () => {
           onChange={handleChangeCityInput}
           value={searchTerm}
         />
+        {isLoadingCity && <Spinner />}
         {searchTerm !== "" && (
           <button onClick={handleResetInput}>
             <FaDeleteLeft />

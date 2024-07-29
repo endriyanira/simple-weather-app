@@ -250,6 +250,26 @@ body {
   padding: 10px 40px 20px 20px;
 }
 
+.weather-forecast .forecast-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  height: 105px;
+}
+
+.weather-forecast .forecast-item p .hour {
+  font-weight: 500;
+  text-wrap: nowrap;
+  font-size: 14px;
+}
+
+.weather-forecast .forecast-item p .temperature {
+  font-weight: 500;
+  font-size: 16px;
+}
+
 .weather-details {
   display: flex;
   flex-wrap: wrap;
