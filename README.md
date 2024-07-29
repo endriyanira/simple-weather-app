@@ -2,6 +2,10 @@
 
 Create a web-based weather application that allows users to input a location (city) and display the current weather information (temperature, humidity, wind speed, etc). This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## App Demo
+
+[SIMPLE WEATHER APP ](https://simple-weather-app-chi.vercel.app/)
+
 ## Warning
 
 You need to get your own api key and replace it in WeatherApp.tsx file on line 80. Fir need to have your own account in [https://openweathermap.org/](https://openweathermap.org/) and use your own API key on the website.
@@ -19,11 +23,12 @@ You need to get your own api key and replace it in WeatherApp.tsx file on line 8
 
 ## Optional Enhancements
 
-- Geolocation: Allow usrs to get weather information based on their current location using the browser's geolocation API.
+- Background video: Allow telling the weather visually attractive tot the users.
+- Geolocation: Allow users to get weather information based on their current location using the browser's geolocation API.
 - Unit Conversion: Provide an option to switch between Celcius and Fahrenheit for temperature display.
 - Additional Weather Data: Display additional weather data such as sunrise/sunset times, UV index, or air quality index (if available from the API).
 
-## Screensho
+## Screenshoot
 
 Here we have project screenshot :
 
@@ -37,7 +42,8 @@ Here we have project screenshot :
 
 ## About the code
 
-Here we have project screenshot :
+- Need to be constantly refactored.
+- Need to create a testing.
 
 ### `npm start`
 
