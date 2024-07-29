@@ -1,6 +1,6 @@
 import React from "react";
-import { getWeatherIcon } from "../utils/weatherIcon";
-import { WeatherDataType } from "./WeatherApp";
+import { WeatherDataType } from "../WeatherApp";
+import { getWeatherIcon } from "../../utils/weatherIcon";
 
 interface WeatherMainBoxType {
   isNotFound: boolean;

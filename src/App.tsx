@@ -1,5 +1,4 @@
 import "./App.css";
-import Input from "./Components/Input";
 import WeatherApp from "./Components/WeatherApp";
 
 function App() {

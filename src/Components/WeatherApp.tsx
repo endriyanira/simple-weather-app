@@ -4,13 +4,13 @@ import { FaLocationDot, FaDeleteLeft } from "react-icons/fa6";
 import { debounce } from "../utils/debounce";
 import { weatherBg } from "../utils/weatherBg";
 
-import Forecast from "./Forecast";
 import NotFound from "./NotFound";
 
 import "./WeatherApp.css";
-import WeatherDetails from "./WeatherDetails";
-import WeatherMainBox from "./WeatherMainBox";
-import SuggestedCity from "./SuggestedCity";
+import Forecast from "./Forecast/Forecast";
+import WeatherMainBox from "./WeatherInfo/WeatherMainBox";
+import WeatherDetails from "./WeatherInfo/WeatherDetails";
+import SuggestedCity from "./SuggestedCity/SuggestedCity";
 
 export type WeatherDataType = {
   humidity: number;
