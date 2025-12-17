@@ -190,6 +190,7 @@ const WeatherApp = () => {
         if (data.length === 0) {
           setIsNotFound(true);
           setShowSuggestedCity(false);
+          setIsCitySelected(false);
         } else {
           setCitiesCoordinate(data);
           setShowSuggestedCity(true);
@@ -332,12 +333,18 @@ const WeatherApp = () => {
           </button>
         )}
       </div>
-      {citiesCoordinate.length !== 0 && showSuggestedCity && (
-        <ul className="weather-suggested-cities">
-          {searchTerm !== "" &&
-            !isCitySelected &&
-            citiesCoordinate.length !== 0 &&
-            citiesCoordinate.map(
+      {citiesCoordinate.length !== 0 &&
+        showSuggestedCity &&
+        searchTerm !== "" &&
+        !isCitySelected &&
+        citiesCoordinate.length !== 0 && (
+          <ul
+            className="weather-suggested-cities"
+            style={{
+              pointerEvents: "none",
+            }}
+          >
+            {citiesCoordinate.map(
               (city: CityWithCoodinateType, index: number) => (
                 <SuggestedCity
                   key={`suggestedCity-${index.toString()}`}
@@ -346,8 +353,8 @@ const WeatherApp = () => {
                 />
               )
             )}
-        </ul>
-      )}
+          </ul>
+        )}
 
       {isSearch && (
         <>
