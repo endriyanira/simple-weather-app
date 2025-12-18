@@ -141,7 +141,6 @@ const WeatherApp = () => {
   });
 
   const [isLoadingCity, setIsLoadingCity] = useState<boolean>(false);
-  const [isLoadingDetails, setIsLoadingDetails] = useState<boolean>(false);
   const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [isChangeCity, setIsChangeCity] = useState<boolean>(false);

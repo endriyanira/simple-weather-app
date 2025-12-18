@@ -1,5 +1,3 @@
-import { CityWithCoodinateType } from "../Components/WeatherApp";
-
 interface GeolocationPosition {
   coords: GeolocationCoordinates;
   timestamp: number;
